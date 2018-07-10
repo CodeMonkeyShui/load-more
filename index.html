@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>load-more</title>
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+	<ul id="ct">
+	</ul>
+	<a class="btn" href="#" id="load">load-more</a>
+
+	<script>
+/*定义接口
+  
+  1) url:
+  2) 入参: { start: 2, len: 6 }
+  3) 回参: 
+  {
+    status: 1, //1代表正常，0代表出错
+    data: [2,3,4,5,6,7]
+  }
+  */
+
+		//load 发请求
+		var load = document.querySelector('#load')
+		var ct = document.querySelector('#ct')
+
+		var index = 0
+		var length = 5
+		var isLoading = false //状态锁，用于判断是否在加载数据
+
+		load.addEventListener('click',function(e){
+
+			if(isLoading){
+				return  //如果正在请求数据，那这次点击什么都不做
+			}
+
+			//执行到这里说明 没有正在发出的请求，那后面就可以发请求
+			isLoading = true
+			ajax('/loadMore',{
+				idx: index,
+				len: length
+			},function(data){
+				appendData(data)
+				isLoading = false //数据到来之后 解锁
+				index = index + length
+				// console
+			})
+		})
+
+		function ajax(url, json, onSuccess, onError){
+			var xhr = new XMLHttpRequest()
+			var arr = []
+			for(key in json){
+				arr.push(key + '=' + json[key])
+			}
+			url += '?' + arr.join('&')
+
+			xhr.open('get', url)
+			xhr.send()
+
+			xhr.onload = function(){
+				if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
+					// 
+					onSuccess(JSON.parse(this.responseText))
+				}else{
+					onError && onError()
+				}
+			}
+		}
+
+		function appendData(data){
+			for(var i = 0; i < data.length; i++){
+				var child = document.createElement('li')
+				child.innerText = data[i]
+				ct.appendChild(child)
+			}
+		}
+	</script>
+</body>
+</html>

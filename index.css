@@ -1,0 +1,38 @@
+ul,li{
+	margin: 0;
+	padding: 0;
+}
+#ct li{
+	list-style: none;
+	border: 1px solid #ccc;
+	padding: 8px;
+	margin-top: 8px;
+	cursor: pointer;
+}
+#load {
+	display: block;
+	margin: 10px auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: center;
+	cursor: pointer;
+}
+#load img{
+	width: 40px;
+	height: 40px;
+}
+.btn{
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	width: 80px;
+	border: 1px solid #e27272;
+	border-radius: 3px;
+	text-align: center;
+	text-decoration: none;
+	color: #e27272;
+}
+.btn:hover{
+	background: yellow;
+	color: #fff;
+}
